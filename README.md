@@ -34,6 +34,7 @@ This system enables efficient tracking and management of financial transactions 
 ---
 
 ## 🏗️ Architecture
+<img width="1000" height="1900" alt="diagram-export-4-6-2026-10_13_17-AM" src="https://github.com/user-attachments/assets/83b01237-acb8-47a5-a33c-7d6c43bc8a46" />
 
 The project follows a **Layered Architecture**:
 Controller Layer → Handles HTTP requests & responses
