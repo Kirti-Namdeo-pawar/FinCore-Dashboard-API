@@ -5,6 +5,7 @@ import com.finance.dashboard.finance.management.system.Repository.UserRepository
 import com.finance.dashboard.finance.management.system.entities.TransactionType;
 import com.finance.dashboard.finance.management.system.entities.Transactions;
 import com.finance.dashboard.finance.management.system.entities.User;
+import com.finance.dashboard.finance.management.system.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ private final UserRepository userRepo;
     public Map<String, Object> getSummary(String username) {
 
         User user = userRepo.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"+username));
 
         List<Transactions> trans;
 

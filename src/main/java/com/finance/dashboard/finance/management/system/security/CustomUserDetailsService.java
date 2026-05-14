@@ -1,6 +1,7 @@
 package com.finance.dashboard.finance.management.system.security;
 
 import com.finance.dashboard.finance.management.system.Repository.UserRepository;
+import com.finance.dashboard.finance.management.system.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ public class CustomUserDetailsService  implements UserDetailsService{
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         User user = userRepo.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+                .orElseThrow(() -> new UserNotFoundException("User not found with username: " + username));
 
         return new CustomUserDetails(user);
     }

@@ -7,6 +7,8 @@ import com.finance.dashboard.finance.management.system.dtos.TransactionResponse;
 import com.finance.dashboard.finance.management.system.dtos.UpdateTransactionRequest;
 import com.finance.dashboard.finance.management.system.entities.Transactions;
 import com.finance.dashboard.finance.management.system.entities.User;
+import com.finance.dashboard.finance.management.system.exception.TransactionNotFoundException;
+import com.finance.dashboard.finance.management.system.exception.UserNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,7 @@ public class TransactionServiceImpl implements TransactionServiceInterface {
     private final UserRepository userRepo;
     @Override
     public void createTransaction(TransactionRequest req, String username) {
-User user=userRepo.findByUsername(req.getUsername()).orElseThrow(()->new RuntimeException("User not found..."));
+User user=userRepo.findByUsername(req.getUsername()).orElseThrow(()->new UserNotFoundException("User not found..."+username));
 Transactions trans=new Transactions();
         trans.setAmount(req.getAmount());
         trans.setType(req.getType());
@@ -35,7 +37,7 @@ Transactions trans=new Transactions();
     @Override
     public List<TransactionResponse> getTransactions(String username) {
 
-        User user=userRepo.findByUsername(username).orElseThrow(()->new RuntimeException("User not Found..."));
+        User user=userRepo.findByUsername(username).orElseThrow(()->new UserNotFoundException("User not Found..."+username));
 
         List<Transactions> trans;
 
@@ -71,7 +73,7 @@ Transactions trans=new Transactions();
 
     @Override
     public void updateTransaction(Long id, UpdateTransactionRequest req, String username) {
-Transactions t=transactionRepo.findById(id).orElseThrow(()->new RuntimeException("No Transaction records found by this id"));
+Transactions t=transactionRepo.findById(id).orElseThrow(()->new TransactionNotFoundException("No Transaction records found by  id"+id));
 
         if (req.getAmount() != null) t.setAmount(req.getAmount());
         if (req.getCategory() != null) t.setCategory(req.getCategory());
@@ -84,7 +86,7 @@ Transactions t=transactionRepo.findById(id).orElseThrow(()->new RuntimeException
 
     @Override
     public void deleteTransaction(Long id, String username) {
-        Transactions t = transactionRepo.findById(id).orElseThrow(() -> new RuntimeException("Transaction not found"));
+        Transactions t = transactionRepo.findById(id).orElseThrow(() -> new TransactionNotFoundException("Transaction not found by id "+id));
 
 
         transactionRepo.delete(t);
